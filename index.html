@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sanjai Subramani — Embedded Firmware Engineer</title>
+<meta name="description" content="Portfolio of Sanjai Subramani, Embedded Firmware Engineer skilled in STM32, ESP32, Embedded C, IoT Systems and HAL Libraries."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--c:#00f5ff;--b:#0066ff;--dk:#020b18;--card:rgba(0,20,40,0.78);--glow:0 0 20px rgba(0,245,255,0.35);--glow2:0 0 40px rgba(0,245,255,0.65)}
+html{scroll-behavior:smooth}
+body{background:var(--dk);color:#c8e6f0;font-family:'Exo 2',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--dk)}::-webkit-scrollbar-thumb{background:var(--c);border-radius:2px}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.55}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2.5rem;background:rgba(2,11,24,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,245,255,.1)}
+.logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1rem;color:var(--c);letter-spacing:3px;text-shadow:var(--glow)}
+.nav-links{display:flex;gap:1.8rem}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:2px;color:rgba(200,230,240,.65);text-decoration:none;text-transform:uppercase;transition:color .2s,text-shadow .2s}
+.nav-links a:hover{color:var(--c);text-shadow:var(--glow)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--c)}
+@media(max-width:640px){.nav-links{display:none}.hamburger{display:flex}nav{padding:.9rem 1.2rem}}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:5rem 1.5rem 3rem;position:relative;z-index:1}
+.hero-badge{font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:4px;color:var(--c);border:1px solid rgba(0,245,255,.3);padding:4px 16px;border-radius:2px;margin-bottom:1.4rem;background:rgba(0,245,255,.04);display:inline-block;animation:fadeUp .6s .1s both}
+.hero-name{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,7vw,4.8rem);font-weight:900;color:#fff;letter-spacing:4px;text-shadow:0 0 60px rgba(0,245,255,.25);line-height:1.1;margin-bottom:.5rem;animation:fadeUp .6s .2s both}
+.hero-role{font-family:'Orbitron',sans-serif;font-size:clamp(.85rem,2.5vw,1.25rem);font-weight:400;color:var(--c);letter-spacing:5px;text-transform:uppercase;margin-bottom:1.4rem;text-shadow:var(--glow);min-height:2rem;animation:fadeUp .6s .3s both}
+.cursor{display:inline-block;animation:blink 1s infinite;color:var(--c)}
+.hero-intro{font-size:.98rem;color:rgba(200,230,240,.7);max-width:540px;line-height:1.85;margin:0 auto 2.2rem;animation:fadeUp .6s .4s both}
+.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s .5s both}
+.btn-p{font-family:'Orbitron',sans-serif;font-size:.68rem;letter-spacing:2.5px;padding:.75rem 1.8rem;cursor:pointer;background:linear-gradient(135deg,var(--c),var(--b));color:#000;border:none;border-radius:2px;text-transform:uppercase;font-weight:700;transition:all .3s;box-shadow:var(--glow)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:var(--glow2)}
+.btn-o{font-family:'Orbitron',sans-serif;font-size:.68rem;letter-spacing:2.5px;padding:.75rem 1.8rem;cursor:pointer;background:transparent;color:var(--c);border:1px solid rgba(0,245,255,.45);border-radius:2px;text-transform:uppercase;transition:all .3s}
+.btn-o:hover{background:rgba(0,245,255,.08);border-color:var(--c);box-shadow:var(--glow);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s .6s both}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:1.9rem;font-weight:900;color:var(--c);text-shadow:var(--glow)}
+.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:rgba(200,230,240,.45);text-transform:uppercase;margin-top:2px}
+
+/* SECTIONS */
+.section{position:relative;z-index:1;padding:5.5rem 2rem;max-width:1180px;margin:0 auto}
+.sec-label{font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:4px;color:var(--c);text-transform:uppercase;margin-bottom:.4rem;opacity:.8}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:700;color:#e8f4ff;margin-bottom:2.8rem;position:relative;display:inline-block}
+.sec-title::after{content:'';position:absolute;bottom:-7px;left:0;width:55%;height:2px;background:linear-gradient(90deg,var(--c),transparent)}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start}
+@media(max-width:700px){.about-grid{grid-template-columns:1fr}}
+.about-text p{font-size:.95rem;line-height:1.9;color:rgba(200,230,240,.72);margin-bottom:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:1.2rem}
+.chip{font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:1px;padding:3px 11px;border:1px solid rgba(0,245,255,.22);border-radius:2px;color:rgba(0,245,255,.8);background:rgba(0,245,255,.03)}
+.a-card{background:var(--card);border:1px solid rgba(0,245,255,.13);border-radius:7px;padding:1.4rem;backdrop-filter:blur(10px)}
+.a-row{display:flex;align-items:flex-start;gap:11px;padding:.7rem 0;border-bottom:1px solid rgba(0,245,255,.06)}
+.a-row:last-child{border-bottom:none}
+.a-ico{width:30px;height:30px;background:rgba(0,245,255,.09);border:1px solid rgba(0,245,255,.18);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.a-lbl{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:rgba(0,245,255,.6);text-transform:uppercase;margin-bottom:1px}
+.a-val{font-size:.85rem;color:#c8e6f0}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.1rem}
+.sk-card{background:var(--card);border:1px solid rgba(0,245,255,.11);border-radius:7px;padding:1.3rem;backdrop-filter:blur(10px);transition:all .3s}
+.sk-card:hover{border-color:rgba(0,245,255,.38);box-shadow:0 0 24px rgba(0,245,255,.1);transform:translateY(-3px)}
+.sk-cat{font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:3px;color:var(--c);text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
+.sk-cat::before{content:'';width:14px;height:1px;background:var(--c);flex-shrink:0}
+.sk-tags{display:flex;flex-wrap:wrap;gap:5px}
+.sk-tag{font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:.5px;padding:3px 9px;background:rgba(0,102,255,.1);border:1px solid rgba(0,102,255,.22);border-radius:2px;color:#a0c8ff;transition:all .2s}
+.sk-tag:hover{background:rgba(0,245,255,.09);border-color:rgba(0,245,255,.35);color:var(--c)}
+
+/* PROJECTS */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.4rem}
+.proj-card{background:var(--card);border:1px solid rgba(0,245,255,.1);border-radius:8px;padding:1.5rem;backdrop-filter:blur(12px);transition:all .35s;position:relative;overflow:hidden}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:0;transition:opacity .3s}
+.proj-card:hover{border-color:rgba(0,245,255,.32);box-shadow:0 0 36px rgba(0,245,255,.09);transform:translateY(-4px)}
+.proj-card:hover::before{opacity:1}
+.proj-num{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:3px;color:rgba(0,245,255,.4);margin-bottom:.5rem}
+.proj-name{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:#e8f4ff;margin-bottom:.7rem;line-height:1.4}
+.proj-desc{font-size:.83rem;line-height:1.75;color:rgba(200,230,240,.62);margin-bottom:1.1rem}
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px}
+.proj-tag{font-family:'Share Tech Mono',monospace;font-size:.63rem;letter-spacing:.5px;padding:2px 7px;background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.16);border-radius:2px;color:var(--c)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--c),transparent)}
+.tl-item{position:relative;margin-bottom:2.2rem}
+.tl-dot{position:absolute;left:-2.35rem;top:5px;width:9px;height:9px;background:var(--c);border-radius:50%;box-shadow:var(--glow)}
+.tl-card{background:var(--card);border:1px solid rgba(0,245,255,.11);border-radius:7px;padding:1.4rem;backdrop-filter:blur(10px);transition:all .3s}
+.tl-card:hover{border-color:rgba(0,245,255,.28);box-shadow:0 0 20px rgba(0,245,255,.07)}
+.tl-role{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:#e8f4ff;margin-bottom:2px}
+.tl-co{font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:2px;color:var(--c);margin-bottom:.75rem}
+.tl-date{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;color:rgba(200,230,240,.38);float:right;margin-top:-1px}
+.tl-ul{list-style:none}
+.tl-ul li{font-size:.83rem;color:rgba(200,230,240,.68);padding:3px 0 3px 14px;position:relative}
+.tl-ul li::before{content:'▸';position:absolute;left:0;color:var(--c);font-size:.68rem}
+
+/* ACHIEVEMENTS */
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.1rem}
+.ach-card{background:var(--card);border:1px solid rgba(0,245,255,.11);border-radius:7px;padding:1.5rem 1rem;text-align:center;backdrop-filter:blur(10px);transition:all .3s}
+.ach-card:hover{border-color:rgba(0,245,255,.32);box-shadow:0 0 28px rgba(0,245,255,.1);transform:translateY(-3px)}
+.ach-ico{font-size:1.5rem;margin-bottom:.4rem}
+.ach-num{font-family:'Orbitron',sans-serif;font-size:1.9rem;font-weight:900;color:var(--c);text-shadow:var(--glow);margin-bottom:3px}
+.ach-lbl{font-family:'Share Tech Mono',monospace;font-size:.64rem;letter-spacing:1.5px;color:rgba(200,230,240,.55);text-transform:uppercase;line-height:1.5}
+.cert-box{background:var(--card);border:1px solid rgba(0,245,255,.1);border-radius:7px;padding:1.3rem 1.5rem;margin-top:1.6rem;backdrop-filter:blur(10px)}
+.cert-label{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:3px;color:var(--c);text-transform:uppercase;margin-bottom:.8rem}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:2.5rem}
+@media(max-width:700px){.contact-grid{grid-template-columns:1fr}}
+.c-info{display:flex;flex-direction:column;gap:.9rem}
+.c-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid rgba(0,245,255,.09);border-radius:7px;padding:.9rem 1.1rem;backdrop-filter:blur(8px);transition:all .3s;text-decoration:none}
+.c-row:hover{border-color:rgba(0,245,255,.28);box-shadow:var(--glow)}
+.c-ico{width:34px;height:34px;background:rgba(0,245,255,.09);border:1px solid rgba(0,245,255,.18);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.c-lbl{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:rgba(0,245,255,.58);text-transform:uppercase}
+.c-val{font-size:.85rem;color:#c8e6f0}
+.c-form{display:flex;flex-direction:column;gap:.8rem}
+.c-form input,.c-form textarea{background:rgba(0,20,40,.85);border:1px solid rgba(0,245,255,.14);border-radius:4px;padding:.72rem 1rem;color:#c8e6f0;font-family:'Exo 2',sans-serif;font-size:.88rem;resize:none;outline:none;transition:border-color .2s,box-shadow .2s}
+.c-form input:focus,.c-form textarea:focus{border-color:rgba(0,245,255,.38);box-shadow:0 0 14px rgba(0,245,255,.07)}
+.c-form textarea{min-height:108px}
+#send-msg{position:relative;overflow:hidden}
+#send-success{display:none;color:#00f5ff;font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:2px;padding:.5rem 0}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(0,245,255,.07);padding:2rem;text-align:center;background:rgba(2,11,24,.95)}
+.f-logo{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:900;color:var(--c);letter-spacing:4px;margin-bottom:.4rem;text-shadow:var(--glow)}
+.f-sub{font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:2px;color:rgba(200,230,240,.28);text-transform:uppercase;margin-bottom:.2rem}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+
+/* Scanlines on hero */
+#hero::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,245,255,.012) 2px,rgba(0,245,255,.012) 4px);pointer-events:none}
+
+@media(max-width:600px){.section{padding:3.5rem 1rem}.hero-name{letter-spacing:1px}.nav-links{display:none}}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<nav>
+  <div class="logo">SS</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <h1 class="hero-name">SANJAI<br>SUBRAMANI</h1>
+  <div class="hero-role" id="typed-role"><span id="typed-text"></span><span class="cursor">_</span></div>
+  <p class="hero-intro">Skilled in STM32, ESP32, Embedded C, IoT Systems, HAL Libraries, and Real-Time Embedded Solutions. Co-founder of Protogen Tech Development.</p>
+  <div class="hero-btns">
+    <button class="btn-p" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Projects</button>
+    <button class="btn-o" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Me</button>
+  
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-num">17+</div><div class="stat-lbl">Projects</div></div>
+    <div class="stat-item"><div class="stat-num">50+</div><div class="stat-lbl">Clients</div></div>
+    <div class="stat-item"><div class="stat-num">8.3</div><div class="stat-lbl">CGPA</div></div>
+    <div class="stat-item"><div class="stat-num">3×</div><div class="stat-lbl">Excellence Award</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section reveal" id="about">
+<div class="sec-title">About Me</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a final-year Electronics and Communication Engineering student at Tamil Nadu College of Engineering, passionate about building intelligent embedded systems that solve real-world problems.</p>
+      <p>With hands-on experience in STM32 and ESP32 platforms, I specialise in firmware development, HAL libraries, and hardware interfacing across industrial, safety, and IoT domains.</p>
+      <p>Beyond academics, I co-founded <strong style="color:#00f5ff">Protogen Tech Development</strong> — a startup project centre delivering 17 embedded systems projects to 50+ clients across Tamil Nadu.</p>
+      <div class="chips">
+        <span class="chip">IoT Systems</span><span class="chip">Real-Time Firmware</span><span class="chip">HAL Libraries</span><span class="chip">PCB Design</span><span class="chip">Hardware Debugging</span><span class="chip">Sensor Integration</span>
+      </div>
+    </div>
+    <div class="a-card">
+      <div class="a-row"><div class="a-ico">🎓</div><div><div class="a-lbl">Degree</div><div class="a-val">B.E. ECE (Honours) — 2026</div></div></div>
+      <div class="a-row"><div class="a-ico">🏫</div><div><div class="a-lbl">College</div><div class="a-val">Tamil Nadu College of Engineering</div></div></div>
+      <div class="a-row"><div class="a-ico">📊</div><div><div class="a-lbl">CGPA</div><div class="a-val">8.30 / 10</div></div></div>
+      <div class="a-row"><div class="a-ico">📍</div><div><div class="a-lbl">Location</div><div class="a-val">Tiruppur, Tamil Nadu</div></div></div>
+      <div class="a-row"><div class="a-ico">💼</div><div><div class="a-lbl">Startup</div><div class="a-val">Protogen Tech Development</div></div></div>
+      <div class="a-row"><div class="a-ico">✉️</div><div><div class="a-lbl">Email</div><div class="a-val">sanjaisbrmni@gmail.com</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section reveal" id="skills" style="background:linear-gradient(180deg,transparent,rgba(0,20,40,.25),transparent)">
+<div class="sec-title">Skills &amp; Tools</div>
+  <div class="skills-grid">
+    <div class="sk-card"><div class="sk-cat">Programming</div><div class="sk-tags"><span class="sk-tag">Embedded C</span><span class="sk-tag">C++</span><span class="sk-tag">Python</span></div></div>
+    <div class="sk-card"><div class="sk-cat">Microcontrollers</div><div class="sk-tags"><span class="sk-tag">STM32</span><span class="sk-tag">ESP32</span><span class="sk-tag">AVR</span><span class="sk-tag">PIC16F877A</span><span class="sk-tag">8051</span><span class="sk-tag">LPC2148</span><span class="sk-tag">Arduino</span></div></div>
+    <div class="sk-card"><div class="sk-cat">Protocols</div><div class="sk-tags"><span class="sk-tag">UART</span><span class="sk-tag">SPI</span><span class="sk-tag">I2C</span><span class="sk-tag">LoRa</span><span class="sk-tag">NRF24L01</span><span class="sk-tag">GSM</span><span class="sk-tag">GPS</span></div></div>
+    <div class="sk-card"><div class="sk-cat">Tools &amp; IDEs</div><div class="sk-tags"><span class="sk-tag">STM32CubeIDE</span><span class="sk-tag">Keil ARM</span><span class="sk-tag">MPLAB IDE</span><span class="sk-tag">Proteus</span><span class="sk-tag">KiCad</span><span class="sk-tag">EasyEDA</span><span class="sk-tag">MATLAB</span><span class="sk-tag">LTSpice</span></div></div>
+    <div class="sk-card"><div class="sk-cat">Technical Skills</div><div class="sk-tags"><span class="sk-tag">HAL Library</span><span class="sk-tag">Bare Metal</span><span class="sk-tag">GPIO Control</span><span class="sk-tag">Firmware Dev</span><span class="sk-tag">Debugging</span><span class="sk-tag">PCB Design</span><span class="sk-tag">Circuit Analysis</span><span class="sk-tag">Peripheral Interfacing</span></div></div>
+    <div class="sk-card"><div class="sk-cat">Personal Traits</div><div class="sk-tags"><span class="sk-tag">Report Writing</span><span class="sk-tag">Time Management</span><span class="sk-tag">Multitasking</span><span class="sk-tag">Administration</span></div></div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="section reveal" id="projects">
+<div class="sec-title">Projects</div>
+  <div class="proj-grid">
+    <div class="proj-card"><div class="proj-num">Project 01</div><div class="proj-name">Highway Accident Alert System</div><div class="proj-desc">Real-time accident detection in 0.5 seconds using STM32 HAL with sensor integration and GSM/GPS communication for emergency alerting.</div><div class="proj-tags"><span class="proj-tag">STM32</span><span class="proj-tag">HAL Library</span><span class="proj-tag">GSM</span><span class="proj-tag">GPS</span><span class="proj-tag">Signal Processing</span></div></div>
+    <div class="proj-card"><div class="proj-num">Project 02</div><div class="proj-name">LV Conductor Breakage Detection</div><div class="proj-desc">Fault detection in rural LV distribution lines with relay trip output, GSM alerts, and on-site alarm indication up to 100m radius.</div><div class="proj-tags"><span class="proj-tag">STM32</span><span class="proj-tag">Fault Detection</span><span class="proj-tag">Relay</span><span class="proj-tag">GSM Alerts</span></div></div>
+    <div class="proj-card"><div class="proj-num">Project 03</div><div class="proj-name">Wireless Underground Safety Network</div><div class="proj-desc">STM32-based mining helmet with real-time hazard monitoring using NRF24L01 and Optical IR communication links.</div><div class="proj-tags"><span class="proj-tag">STM32</span><span class="proj-tag">NRF24L01</span><span class="proj-tag">Optical IR</span><span class="proj-tag">Mining Safety</span></div></div>
+    <div class="proj-card"><div class="proj-num">Project 04</div><div class="proj-name">LoRa Ambulance Routing System</div><div class="proj-desc">Autonomous traffic signal preemption within 10km using ESP32 + LoRa, with real-time patient vitals streamed to hospital via GSM.</div><div class="proj-tags"><span class="proj-tag">ESP32</span><span class="proj-tag">LoRa</span><span class="proj-tag">GSM</span><span class="proj-tag">Traffic Control</span></div></div>
+    <div class="proj-card"><div class="proj-num">Project 05</div><div class="proj-name">Smart Greenhouse Automation</div><div class="proj-desc">ESP32-CAM ML model with 80% accuracy for early-stage plant disease detection and automated environmental parameter monitoring.</div><div class="proj-tags"><span class="proj-tag">ESP32-CAM</span><span class="proj-tag">Machine Learning</span><span class="proj-tag">Automation</span><span class="proj-tag">IoT</span></div></div>
+    <div class="proj-card"><div class="proj-num">Mini Project 1</div><div class="proj-name">Smart Shopping Trolley</div><div class="proj-desc">STM32 and ESP32-based autonomous shopping system with RFID item scanning and TFT display for real-time billing.</div><div class="proj-tags"><span class="proj-tag">STM32</span><span class="proj-tag">ESP32</span><span class="proj-tag">RFID</span><span class="proj-tag">TFT Display</span></div></div>
+    <div class="proj-card"><div class="proj-num">Mini Project 2</div><div class="proj-name">Adaptive Hybrid Microgrid System</div><div class="proj-desc">STM32-based intelligent microgrid with auto source-switching between power sources for continuous, uninterrupted supply.</div><div class="proj-tags"><span class="proj-tag">STM32</span><span class="proj-tag">Power Systems</span><span class="proj-tag">Auto-switching</span></div></div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="section reveal" id="experience">
+<div class="sec-title">Internships</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <span class="tl-date">OCT 2025</span>
+        <div class="tl-role">Embedded System Intern</div>
+        <div class="tl-co">Embuzz Technologies — Coimbatore</div>
+        <ul class="tl-ul">
+          <li>Embedded C programming on ATMEGA32 platform</li>
+          <li>GPIO control and peripheral interfacing</li>
+          <li>Interrupt-driven I/O routine implementation</li>
+          <li>Hardware debugging and firmware development</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <span class="tl-date">JUL 2025</span>
+        <div class="tl-role">Hardware Trainee</div>
+        <div class="tl-co">Salzer Electronics — Coimbatore</div>
+        <ul class="tl-ul">
+          <li>Industrial-level electronics exposure</li>
+          <li>Assembly-level understanding of electrical/electronic devices</li>
+          <li>Hands-on with industrial-grade electronic components</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <span class="tl-date">2025</span>
+        <div class="tl-role">Embedded Systems &amp; PCB Design Training</div>
+        <div class="tl-co">PUMO Technovation — Tiruppur</div>
+        <ul class="tl-ul">
+          <li>Advanced PCB design methodology and best practices</li>
+          <li>Embedded systems architecture patterns</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENTS -->
+<div class="section reveal" id="achievements">
+<div class="sec-title">Achievements</div>
+  <div class="ach-grid">
+    <div class="ach-card"><div class="ach-ico">🏭</div><div class="ach-num">17</div><div class="ach-lbl">Projects Delivered</div></div>
+    <div class="ach-card"><div class="ach-ico">👥</div><div class="ach-num">50+</div><div class="ach-lbl">Clients Served</div></div>
+    <div class="ach-card"><div class="ach-ico">🏆</div><div class="ach-num">3×</div><div class="ach-lbl">Academic Excellence</div></div>
+    <div class="ach-card"><div class="ach-ico">⚡</div><div class="ach-num">5+</div><div class="ach-lbl">Inter-College Events</div></div>
+    <div class="ach-card"><div class="ach-ico">🚀</div><div class="ach-num">1</div><div class="ach-lbl">Startup Co-Founded</div></div>
+    <div class="ach-card"><div class="ach-ico">📜</div><div class="ach-num">8+</div><div class="ach-lbl">Certifications</div></div>
+  </div>
+  <div class="cert-box">
+    <div class="cert-label">Certifications</div>
+    <div class="chips">
+      <span class="chip">Embedded Systems — Pantech Solutions</span>
+      <span class="chip">Internet of Things — Campalin Innovation</span>
+      <span class="chip">NPTEL: C &amp; Python</span>
+      <span class="chip">NPTEL: Digital Circuits</span>
+      <span class="chip">NPTEL: Embedded Systems</span>
+      <span class="chip">Naan Mudhalvan Certifications</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section reveal" id="contact">
+<div class="sec-title">Get In Touch</div>
+  <div class="contact-grid">
+    <div class="c-info">
+      <a class="c-row" href="mailto:sanjaisbrmni@gmail.com"><div class="c-ico">✉️</div><div><div class="c-lbl">Email</div><div class="c-val">sanjaisbrmni@gmail.com</div></div></a>
+      <a class="c-row" href="tel:+918122177564"><div class="c-ico">📱</div><div><div class="c-lbl">Phone</div><div class="c-val">+91 81221 77564</div></div></a>
+      <a class="c-row" href="https://linkedin.com/in/sanjaisubramani" target="_blank"><div class="c-ico">💼</div><div><div class="c-lbl">LinkedIn</div><div class="c-val">Sanjai Subramani</div></div></a>
+      <a class="c-row" href="https://github.com/Sanjaisubramani" target="_blank"><div class="c-ico">🐱</div><div><div class="c-lbl">GitHub</div><div class="c-val">Sanjaisubramani</div></div></a>
+      <a class="c-row" href="#"><div class="c-ico">📍</div><div><div class="c-lbl">Location</div><div class="c-val">Tiruppur, Tamil Nadu</div></div></a>
+    </div>
+    <div class="c-form">
+      <input type="text" id="cf-name" placeholder="Your Name"/>
+      <input type="email" id="cf-email" placeholder="Your Email"/>
+      <textarea id="cf-msg" placeholder="Your Message"></textarea>
+      <button class="btn-p" id="send-msg" onclick="sendMsg()">Send Message</button>
+      <div id="send-success">✓ Message sent! I'll get back to you soon.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">SANJAI SUBRAMANI</div>
+  <div class="f-sub">Embedded Firmware Engineer · Tiruppur, Tamil Nadu</div>
+  <div class="f-sub" style="margin-top:.4rem">© 2025 — Protogen Tech Development</div>
+</footer>
+
+<script>
+/* ── Space + Circuit Canvas ── */
+(function(){
+  const c=document.getElementById('bgCanvas');
+  const ctx=c.getContext('2d');
+  let W,H,stars,shootingStars,nebulae,nodes;
+
+  function init(){
+    W=c.width=window.innerWidth;
+    H=c.height=window.innerHeight;
+
+    // Static twinkling stars
+    stars=Array.from({length:180},()=>({
+      x:Math.random()*W, y:Math.random()*H,
+      r:Math.random()*1.4+0.2,
+      alpha:Math.random(),
+      speed:Math.random()*.012+.003,
+      dir:Math.random()>.5?1:-1
+    }));
+
+    // Shooting stars
+    shootingStars=[];
+
+    // Nebula blobs
+    nebulae=Array.from({length:5},()=>({
+      x:Math.random()*W, y:Math.random()*H,
+      rx:Math.random()*220+100, ry:Math.random()*120+60,
+      hue:Math.random()>0.5?190:250,
+      alpha:Math.random()*.07+.02
+    }));
+
+    // Circuit nodes (fewer, slower)
+    nodes=Array.from({length:14},()=>({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.18, vy:(Math.random()-.5)*.18
+    }));
+  }
+
+  function spawnShooter(){
+    if(Math.random()<.012 && shootingStars.length<4){
+      const sx=Math.random()*W*.7;
+      shootingStars.push({x:sx,y:Math.random()*H*.4,vx:Math.random()*5+3,vy:Math.random()*2+1,len:Math.random()*90+50,alpha:1,life:1});
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Nebulae
+    nebulae.forEach(n=>{
+      const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.rx);
+      g.addColorStop(0,`hsla(${n.hue},100%,60%,${n.alpha})`);
+      g.addColorStop(1,'transparent');
+      ctx.save();ctx.scale(1,n.ry/n.rx);
+      ctx.beginPath();ctx.arc(n.x,n.y*(n.rx/n.ry),n.rx,0,Math.PI*2);
+      ctx.fillStyle=g;ctx.fill();ctx.restore();
+    });
+
+    // Stars twinkle
+    stars.forEach(s=>{
+      s.alpha+=s.speed*s.dir;
+      if(s.alpha>=1||s.alpha<=0.05)s.dir*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      const bright=s.r>1.1?`rgba(180,230,255,${s.alpha})`:`rgba(255,255,255,${s.alpha*.7})`;
+      ctx.fillStyle=bright;ctx.fill();
+      // tiny glow for bigger stars
+      if(s.r>1){
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r*2.5,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,245,255,${s.alpha*.08})`;ctx.fill();
+      }
+    });
+
+    // Shooting stars
+    spawnShooter();
+    shootingStars=shootingStars.filter(s=>{
+      s.x+=s.vx;s.y+=s.vy;s.life-=.018;s.alpha=s.life;
+      const g=ctx.createLinearGradient(s.x,s.y,s.x-s.len*s.vx/6,s.y-s.len*s.vy/6);
+      g.addColorStop(0,`rgba(0,245,255,${s.alpha})`);
+      g.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x-s.len*.5,s.y-s.len*.18);
+      ctx.strokeStyle=g;ctx.lineWidth=1.2;ctx.stroke();
+      return s.life>0 && s.x<W+100;
+    });
+
+    // Circuit nodes (subtle overlay)
+    nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;});
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);
+        if(d<180){
+          ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.strokeStyle=`rgba(0,245,255,${.14*(1-d/180)})`;ctx.lineWidth=.5;ctx.stroke();
+        }
+      }
+      ctx.beginPath();ctx.arc(nodes[i].x,nodes[i].y,1.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,245,255,0.35)';ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  init();draw();
+  window.addEventListener('resize',init);
+})();
+
+/* ── Typing Effect ── */
+(function(){
+  const strings=["Embedded Firmware Engineer","STM32 & ESP32 Specialist","IoT Systems Developer","Real-Time Systems Expert","HAL Library Expert"];
+  let si=0,ci=0,del=false;
+  const el=document.getElementById('typed-text');
+  function tick(){
+    const s=strings[si%strings.length];
+    if(!del){
+      if(ci<s.length){el.textContent=s.slice(0,++ci);setTimeout(tick,72);}
+      else setTimeout(()=>{del=true;tick();},1800);
+    } else {
+      if(ci>0){el.textContent=s.slice(0,--ci);setTimeout(tick,36);}
+      else{del=false;si++;setTimeout(tick,200);}
+    }
+  }
+  tick();
+})();
+
+/* ── Scroll Reveal ── */
+(function(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
+
+/* ── Contact Form ── */
+function sendMsg(){
+  const n=document.getElementById('cf-name').value.trim();
+  const e=document.getElementById('cf-email').value.trim();
+  const m=document.getElementById('cf-msg').value.trim();
+  if(n&&e&&m){
+    const btn=document.getElementById('send-msg');
+    btn.textContent='Sending...';btn.disabled=true;
+    setTimeout(()=>{
+      btn.textContent='Send Message';btn.disabled=false;
+      document.getElementById('cf-name').value='';
+      document.getElementById('cf-email').value='';
+      document.getElementById('cf-msg').value='';
+      const s=document.getElementById('send-success');
+      s.style.display='block';
+      setTimeout(()=>s.style.display='none',4000);
+    },900);
+  }
+}
+
+/* ── Mobile Menu ── */
+function toggleMenu(){
+  const nl=document.querySelector('.nav-links');
+  if(nl.style.display==='flex'){nl.style.display='none';}
+  else{nl.style.cssText='display:flex;flex-direction:column;position:absolute;top:56px;left:0;right:0;background:rgba(2,11,24,.97);padding:1rem 2rem;gap:1rem;border-bottom:1px solid rgba(0,245,255,.1)';}
+}
+</script>
+</body>
+</html>
